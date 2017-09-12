@@ -346,18 +346,21 @@ class HTTPTransport(BaseTransport):
 
         if credentials is not None:
             if auth is not None:
-                warnings.warn("Ignoring 'credentials' argument in favor of 'auth'.")
+                warnings.warn(
+                    "Ignoring 'credentials' argument in favor of 'auth'.",
+                    stacklevel=2
+                )
             else:
                 warnings.warn(
                     "The 'credentials' argument is now deprecated in favor of 'auth'.",
-                    DeprecationWarning
+                    DeprecationWarning, stacklevel=2
                 )
                 session.auth = DomainCredentials(credentials)
         if request_callback is not None or response_callback is not None:
             warnings.warn(
                 "The 'request_callback' and 'response_callback' arguments are now deprecated. "
                 "Use a custom 'session' instance instead.",
-                DeprecationWarning
+                DeprecationWarning, stacklevel=2
             )
             session.mount('https://', CallbackAdapter(request_callback, response_callback))
             session.mount('http://', CallbackAdapter(request_callback, response_callback))
