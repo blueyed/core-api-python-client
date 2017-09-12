@@ -345,11 +345,14 @@ class HTTPTransport(BaseTransport):
             session.cookies.set_policy(BlockAll())
 
         if credentials is not None:
-            warnings.warn(
-                "The 'credentials' argument is now deprecated in favor of 'auth'.",
-                DeprecationWarning
-            )
-            session.auth = DomainCredentials(credentials)
+            if auth is not None:
+                warnings.warn("Ignoring 'credentials' argument in favor of 'auth'.")
+            else:
+                warnings.warn(
+                    "The 'credentials' argument is now deprecated in favor of 'auth'.",
+                    DeprecationWarning
+                )
+                session.auth = DomainCredentials(credentials)
         if request_callback is not None or response_callback is not None:
             warnings.warn(
                 "The 'request_callback' and 'response_callback' arguments are now deprecated. "
